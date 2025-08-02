@@ -15,10 +15,10 @@ public class WorkOrderItems {
 	private Boolean cancel;
 
 	@Column(name = "company_id")
-	private Long companyId;
+	private String companyId;
 
 	@Column(name = "employee_id")
-	private Long employeeId;
+	private String employeeId;
 
 	@Column(name = "height")
 	private Double height;
@@ -68,19 +68,19 @@ public class WorkOrderItems {
 		this.cancel = cancel;
 	}
 
-	public Long getCompanyId() {
+	public String getCompanyId() {
 		return companyId;
 	}
 
-	public void setCompanyId(Long companyId) {
+	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
 	}
 
-	public Long getEmployeeId() {
+	public String getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(Long employeeId) {
+	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
 

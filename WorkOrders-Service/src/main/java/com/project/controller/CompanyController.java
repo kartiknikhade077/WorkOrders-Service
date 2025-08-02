@@ -83,7 +83,7 @@ public class CompanyController {
 				item.setItemNo(workOrder.getItemNo());
 				item.setCompanyId(company.getCompanyId());
 				item.setWorkOrderId(workOrder.getWorkOrderId());
-				item.setEmployeeId(Long.valueOf(0));
+				item.setEmployeeId(null);
 				workOrderItemsRepository.save(item);
 			}
 
@@ -129,7 +129,7 @@ public class CompanyController {
 				item.setItemNo(workOrder.getItemNo());
 				item.setCompanyId(company.getCompanyId());
 				item.setWorkOrderId(workOrder.getWorkOrderId());
-				item.setEmployeeId(Long.valueOf(0));
+				item.setEmployeeId(null);
 				workOrderItemsRepository.save(item);
 			}
 

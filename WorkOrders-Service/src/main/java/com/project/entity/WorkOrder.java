@@ -11,13 +11,13 @@ public class WorkOrder {
     private String workOrderId;
 
     @Column(name = "company_id")
-    private Long companyId;
+    private String companyId;
 
     @Column(name = "customer_name", length = 255)
     private String customerName;
 
     @Column(name = "employee_id")
-    private Long employeeId;
+    private String employeeId;
 
     @Column(name = "item_no")
     private Integer itemNo;
@@ -40,11 +40,11 @@ public class WorkOrder {
     @Column(name = "thickness")
     private Float thickness;
     
-    
+    private String projectId;
 
     // Getters and Setters
 
-    public WorkOrder(String workOrderId, Long companyId, String customerName, Long employeeId, Integer itemNo,
+    public WorkOrder(String workOrderId, String companyId, String customerName, String employeeId, Integer itemNo,
 			String material, String partName, String partSize, String partWeight, String projectName, Float thickness) {
 		super();
 		this.workOrderId = workOrderId;
@@ -75,11 +75,11 @@ public class WorkOrder {
         this.workOrderId = workOrderId;
     }
 
-    public Long getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Long companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
@@ -91,11 +91,11 @@ public class WorkOrder {
         this.customerName = customerName;
     }
 
-    public Long getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -154,4 +154,16 @@ public class WorkOrder {
     public void setThickness(Float thickness) {
         this.thickness = thickness;
     }
+
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+    
+    
 }
