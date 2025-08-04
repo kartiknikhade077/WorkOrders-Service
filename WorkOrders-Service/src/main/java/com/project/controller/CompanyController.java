@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -202,6 +204,42 @@ public class CompanyController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error " + e.getMessage());
 		}
+	}
+	
+	@DeleteMapping("/deleteWorkOrderItem/{itemId}")
+	public ResponseEntity<?> deleteWorkOrderItem(@PathVariable("itemId") String itemId){
+		if (!workOrderItemsRepository.existsById(itemId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Work order item with ID " + itemId + " not found.");
+        }
+
+        workOrderItemsRepository.deleteById(itemId);
+        return ResponseEntity.ok("Work order item deleted successfully.");
+	}
+	
+	@DeleteMapping("/deleteWorkOrderImage/{workOrderImageId}")
+    public ResponseEntity<String> deleteWorkOrderImage(@PathVariable("workOrderImageId") String workOrderImageId) {
+        Optional<WorkOrderImage> imageOpt = workOrderImageRepository.findById(workOrderImageId);
+        if (imageOpt.isPresent()) {
+            workOrderImageRepository.deleteById(workOrderImageId);
+            return ResponseEntity.ok("Image deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found.");
+        }
+    }
+	
+	@PostMapping(value="/newWorkOrderImages",consumes = { "multipart/form-data" })
+	public ResponseEntity<?> addNewImages(
+			@RequestPart(value = "workOrderId", required = false) String workOrderId,
+			@RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException{
+		
+		for (MultipartFile file : images) {
+			WorkOrderImage workOrderImage = new WorkOrderImage();
+			workOrderImage.setImage(file.getBytes());
+			workOrderImage.setWorkOrderId(workOrderId);
+			workOrderImageRepository.save(workOrderImage);
+		}
+		return ResponseEntity.ok("Images saved");
 	}
 
 }
