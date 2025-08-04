@@ -241,5 +241,19 @@ public class CompanyController {
 		}
 		return ResponseEntity.ok("Images saved");
 	}
+	
+	@GetMapping("/getWorkOrderItemsByProjectId/{projectId}")
+	public ResponseEntity<?> getWorkOrderItemsByProjectId(@PathVariable String projectId) {
+
+		try {
+			List<WorkOrderItems> list = workOrderItemsRepository.findByProjectId(projectId);
+			return ResponseEntity.ok(list);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error " + e.getMessage());
+		}
+	}
 
 }
