@@ -1,6 +1,8 @@
 package com.project.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,8 @@ import com.project.entity.WorkOrder;
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
 	
 	WorkOrder findByWorkOrderId(String workOrderId);
+	
+	List<WorkOrder> findByWorkProjectId(String projectId);
 	
 	Page<WorkOrder> findByCompanyIdAndCustomerNameContainingIgnoreCase(String companyId,String customerName,Pageable pageable );
 	

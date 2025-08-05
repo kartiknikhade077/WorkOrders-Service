@@ -271,8 +271,13 @@ public class CompanyController {
 	public ResponseEntity<?> getWorkOrderItemsByProjectId(@PathVariable String projectId) {
 
 		try {
+			Map<String , Object> data=new HashMap<>();
+			List<WorkOrder> workOrderList=workOrderRepository.findByWorkProjectId(projectId);
 			List<WorkOrderItems> list = workOrderItemsRepository.findByProjectId(projectId);
-			return ResponseEntity.ok(list);
+			
+			data.put("partDetails", workOrderList);
+			data.put("partProcess", list);
+			return ResponseEntity.ok(data);
 
 		} catch (Exception e) {
 
