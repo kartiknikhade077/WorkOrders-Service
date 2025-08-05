@@ -11,12 +11,12 @@ public class Parts {
 	@UuidGenerator
 	private String partId;
 	private String partName;
-	private long companyId;
+	private String companyId;
 	public Parts() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Parts(String partId, String partName, long companyId) {
+	public Parts(String partId, String partName, String companyId) {
 		super();
 		this.partId = partId;
 		this.partName = partName;
@@ -34,10 +34,10 @@ public class Parts {
 	public void setPartName(String partName) {
 		this.partName = partName;
 	}
-	public long getCompanyId() {
+	public String getCompanyId() {
 		return companyId;
 	}
-	public void setCompanyId(long companyId) {
+	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
 	}
 	
