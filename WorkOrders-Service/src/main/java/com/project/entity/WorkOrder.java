@@ -41,6 +41,8 @@ public class WorkOrder {
     private Float thickness;
     
     private String projectId;
+    
+    private String customerId;
 
     // Getters and Setters
 
@@ -164,6 +166,15 @@ public class WorkOrder {
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-    
+
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
     
 }
