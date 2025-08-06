@@ -15,7 +15,7 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
 	
 	WorkOrder findByWorkOrderId(String workOrderId);
 	
-	List<WorkOrder> findByWorkProjectId(String projectId);
+	List<WorkOrder> findByProjectId(String projectId);
 	
 	Page<WorkOrder> findByCompanyIdAndCustomerNameContainingIgnoreCase(String companyId,String customerName,Pageable pageable );
 	

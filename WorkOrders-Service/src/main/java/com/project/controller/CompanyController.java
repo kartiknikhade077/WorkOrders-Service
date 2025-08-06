@@ -272,7 +272,7 @@ public class CompanyController {
 
 		try {
 			Map<String , Object> data=new HashMap<>();
-			List<WorkOrder> workOrderList=workOrderRepository.findByWorkProjectId(projectId);
+			List<WorkOrder> workOrderList=workOrderRepository.findByProjectId(projectId);
 			List<WorkOrderItems> list = workOrderItemsRepository.findByProjectId(projectId);
 			
 			data.put("partDetails", workOrderList);
