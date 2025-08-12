@@ -507,5 +507,38 @@ public class CompanyController {
                     .body("Failed to delete Work Order: " + e.getMessage());
         }
     }
+    
+    @PostMapping(value = "/createWorkOrderPart", consumes = { "multipart/form-data" })
+	public ResponseEntity<?> createWorkOrderPart(
+			@RequestPart(value = "workOrder", required = false) String workOrderJson,
+			@RequestPart(value = "images", required = false) MultipartFile[] images
+			) throws IOException
 
+	{
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			// Convert JSON strings to entities
+			WorkOrder workOrder = objectMapper.readValue(workOrderJson, WorkOrder.class);
+			workOrder.setCompanyId(company.getCompanyId());
+			WorkOrder save = workOrderRepository.save(workOrder);
+			
+			if (images != null && images.length > 0) {
+				for (MultipartFile file : images) {
+					WorkOrderImage workOrderImage = new WorkOrderImage();
+					workOrderImage.setImage(file.getBytes());
+					workOrderImage.setWorkOrderId(workOrder.getWorkOrderId());
+					workOrderImageRepository.save(workOrderImage);
+	
+				}
+			}
+
+			return ResponseEntity.ok(save);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error creating employee: " + e.getMessage());
+		}
+	}
+    
 }
