@@ -1,4 +1,6 @@
 package com.project.entity;
+import java.util.List;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.*;
@@ -43,6 +45,9 @@ public class WorkOrder {
     private String projectId;
     
     private String customerId;
+    
+    @Transient
+    private List<String> imageList;
 
     // Getters and Setters
 
@@ -176,5 +181,17 @@ public class WorkOrder {
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
+
+
+	public List<String> getImageList() {
+		return imageList;
+	}
+
+
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
+	}
+	
+	
     
 }

@@ -11,5 +11,7 @@ public interface WorkOrderImageRepository extends JpaRepository<WorkOrderImage, 
 	List<WorkOrderImage> findByWorkOrderId(String workOrderId);
 
 	void deleteByWorkOrderId(String workOrderId);
+	
+	List<WorkOrderImage> findByWorkOrderIdIn(List<String>  workOrderId);
 
 }

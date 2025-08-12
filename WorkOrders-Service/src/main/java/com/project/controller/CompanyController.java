@@ -1,10 +1,13 @@
 package com.project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
 import com.project.client.UserSerivceClinet;
 import com.project.dto.Company;
 import com.project.entity.Material;
@@ -274,6 +276,27 @@ public class CompanyController {
 			Map<String , Object> data=new HashMap<>();
 			List<WorkOrder> workOrderList=workOrderRepository.findByProjectId(projectId);
 			List<WorkOrderItems> list = workOrderItemsRepository.findByProjectId(projectId);
+			
+			
+			List<String> workOrderIds = workOrderList.stream()
+			        .map(WorkOrder::getWorkOrderId)
+			        .collect(Collectors.toList());
+			
+			List<WorkOrderImage> allImages = workOrderImageRepository.findByWorkOrderIdIn(workOrderIds);
+
+			
+			Map<String, List<String>> imagesByWorkOrderId = allImages.stream()
+			        .collect(Collectors.groupingBy(
+			        		WorkOrderImage::getWorkOrderId,
+			            Collectors.mapping(img -> Base64.getEncoder().encodeToString(img.getImage()), Collectors.toList())
+			        ));
+			
+			// Step 4: Set imageList into Work
+			for (WorkOrder item : workOrderList) {
+			    List<String> imageList = imagesByWorkOrderId.getOrDefault(item.getWorkOrderId(), new ArrayList<>());
+			    item.setImageList(imageList);
+			}
+			
 			
 			data.put("partDetails", workOrderList);
 			data.put("partProcess", list);
