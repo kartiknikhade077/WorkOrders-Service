@@ -3,6 +3,7 @@ package com.project.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -572,5 +573,11 @@ public class CompanyController {
 					.body("Error creating employee: " + e.getMessage());
 		}
 	}
+    
+    @GetMapping("/checkItemNo/{itemNo}")
+    public ResponseEntity<Map<String, Boolean>> checkItemNoUniqueness(@PathVariable Integer itemNo) {
+        boolean isUnique = !workOrderRepository.existsByItemNo(itemNo);
+        return ResponseEntity.ok(Collections.singletonMap("isUnique", isUnique));
+    }
     
 }

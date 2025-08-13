@@ -46,13 +46,14 @@ public class WorkOrder {
     
     private String customerId;
     
+    private String partNumber;
+    
     @Transient
     private List<String> imageList;
-
-    // Getters and Setters
-
-    public WorkOrder(String workOrderId, String companyId, String customerName, String employeeId, Integer itemNo,
-			String material, String partName, String partSize, String partWeight, String projectName, Float thickness) {
+    
+	public WorkOrder(String workOrderId, String companyId, String customerName, String employeeId, Integer itemNo,
+			String material, String partName, String partSize, String partWeight, String projectName, Float thickness,
+			String projectId, String customerId, String partNumber, List<String> imageList) {
 		super();
 		this.workOrderId = workOrderId;
 		this.companyId = companyId;
@@ -65,9 +66,12 @@ public class WorkOrder {
 		this.partWeight = partWeight;
 		this.projectName = projectName;
 		this.thickness = thickness;
+		this.projectId = projectId;
+		this.customerId = customerId;
+		this.partNumber = partNumber;
+		this.imageList = imageList;
 	}
 
-    
 	public WorkOrder() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -190,6 +194,16 @@ public class WorkOrder {
 
 	public void setImageList(List<String> imageList) {
 		this.imageList = imageList;
+	}
+
+
+	public String getPartNumber() {
+		return partNumber;
+	}
+
+
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
 	}
 	
 	
