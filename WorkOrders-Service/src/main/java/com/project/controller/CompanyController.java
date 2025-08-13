@@ -541,4 +541,36 @@ public class CompanyController {
 		}
 	}
     
+    @PostMapping(value = "/createWorkOrderItems")
+	public ResponseEntity<String> createWorkOrderItems(
+			@RequestPart(value = "workOrderId", required = false) String workOrderId,
+			@RequestPart(value = "workOrderItems", required = false) String workOrderItemsJson)
+
+	{
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			// Convert JSON strings to entities
+			WorkOrder workOrder = workOrderRepository.findByWorkOrderId(workOrderId);
+
+			List<WorkOrderItems> workOrderItems = objectMapper.readValue(workOrderItemsJson,
+					new TypeReference<List<WorkOrderItems>>() {
+					});
+			// Save work order items
+			for (WorkOrderItems item : workOrderItems) {
+				item.setItemNo(workOrder.getItemNo());
+				item.setCompanyId(company.getCompanyId());
+				item.setWorkOrderId(workOrder.getWorkOrderId());
+				item.setEmployeeId(null);
+				workOrderItemsRepository.save(item);
+			}
+
+			return ResponseEntity.ok("Work order items saved successfully.");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error creating employee: " + e.getMessage());
+		}
+	}
+    
 }
