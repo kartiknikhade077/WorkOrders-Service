@@ -36,15 +36,19 @@ import com.project.client.UserSerivceClinet;
 import com.project.dto.Company;
 import com.project.entity.Material;
 import com.project.entity.Parts;
+import com.project.entity.Processes;
 import com.project.entity.Thickness;
 import com.project.entity.WorkOrder;
 import com.project.entity.WorkOrderImage;
 import com.project.entity.WorkOrderItems;
+import com.project.entity.WorkOrderProcesses;
 import com.project.repository.MaterialRepository;
 import com.project.repository.PartsRepository;
+import com.project.repository.ProcessesRepository;
 import com.project.repository.ThicknessRepository;
 import com.project.repository.WorkOrderImageRepository;
 import com.project.repository.WorkOrderItemsRepository;
+import com.project.repository.WorkOrderProcessesRepository;
 import com.project.repository.WorkOrderRepository;
 
 import jakarta.transaction.Transactional;
@@ -72,6 +76,12 @@ public class CompanyController {
 	
 	@Autowired
 	private PartsRepository partsRepository;
+	
+	@Autowired
+	private WorkOrderProcessesRepository workOrderProcessesRepository;
+	
+	@Autowired
+	private ProcessesRepository processesRepository;
 
 	Company company;
 
@@ -607,5 +617,127 @@ public class CompanyController {
 					.body("Error creating employee: " + e.getMessage());
 		}
 	}
+    
+    @PostMapping("/addWorkOrderProcess/{processName}")
+	public ResponseEntity<?> addWorkOrderProcess(@PathVariable("processName") String processName){
+		try {
+			WorkOrderProcesses workOrderProcesses = new WorkOrderProcesses();
+			workOrderProcesses.setProcessName(processName);
+			workOrderProcesses.setCompanyId(company.getCompanyId());
+			WorkOrderProcesses save = workOrderProcessesRepository.save(workOrderProcesses);
+			
+			return ResponseEntity.ok(save);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error " + e.getMessage());
+		}
+		
+	}
+	
+	@GetMapping("/getAllWorkOrderProcesses")
+	public ResponseEntity<?> getAllWorkOrderProcesses(){
+		try {
+			List<WorkOrderProcesses> allProcessesByCompanyId = workOrderProcessesRepository.findAllByCompanyId(company.getCompanyId());
+			return ResponseEntity.ok(allProcessesByCompanyId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error " + e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/deleteWorkOrderProcesses/{processId}")
+	public ResponseEntity<?> deleteWorkOrderProcesses(@PathVariable("processId") String processId) {
+	    try {
+	        Optional<WorkOrderProcesses> optionalWorkOrderProcesses = workOrderProcessesRepository.findById(processId);
+
+	        if (optionalWorkOrderProcesses.isEmpty()) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                                 .body("Process with ID " + processId + " not found");
+	        }
+
+	        workOrderProcessesRepository.deleteById(processId);
+	        return ResponseEntity.ok("Thickness deleted successfully");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("Error deleting thickness: " + e.getMessage());
+	    }
+	}
+	
+	@PutMapping("/updateWorkOrderProcesses/{processId}")
+	public ResponseEntity<?> updateWorkOrderProcesses(@PathVariable String processId, @RequestBody WorkOrderProcesses updated) {
+	    Optional<WorkOrderProcesses> optional = workOrderProcessesRepository.findById(processId);
+	    if (optional.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+
+	    WorkOrderProcesses workOrderProcesses = optional.get();
+	    workOrderProcesses.setProcessName(updated.getProcessName());
+	    workOrderProcessesRepository.save(workOrderProcesses);
+	    return ResponseEntity.ok(workOrderProcesses);
+	}
+	
+	@PostMapping("/addProcess/{processName}")
+    public ResponseEntity<?> addProcess(@PathVariable("processName") String processName) {
+        try {
+            Processes process = new Processes();
+            process.setProcessId(null); // Let UUID be generated
+            process.setProcessName(processName);
+            process.setCompanyId(company.getCompanyId());
+
+            Processes saved = processesRepository.save(process);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getAllProcesses")
+    public ResponseEntity<?> getAllProcesses() {
+        try {
+            List<Processes> processesList = processesRepository.findAllByCompanyId(company.getCompanyId());
+            return ResponseEntity.ok(processesList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deleteProcess/{processId}")
+    public ResponseEntity<?> deleteProcess(@PathVariable("processId") String processId) {
+        try {
+            Optional<Processes> optional = processesRepository.findById(processId);
+            if (optional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Process with ID " + processId + " not found");
+            }
+            processesRepository.deleteById(processId);
+            return ResponseEntity.ok("Process deleted successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting process: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateProcess/{processId}")
+    public ResponseEntity<?> updateProcess(@PathVariable String processId, @RequestBody Processes updated) {
+        try {
+            Optional<Processes> optional = processesRepository.findById(processId);
+            if (optional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Process not found");
+            }
+            Processes process = optional.get();
+            process.setProcessName(updated.getProcessName());
+            Processes saved = processesRepository.save(process);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating process: " + e.getMessage());
+        }
+    }
     
 }
