@@ -19,6 +19,28 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
 	
 	Page<WorkOrder> findByCompanyIdAndCustomerNameContainingIgnoreCase(String companyId,String customerName,Pageable pageable );
 	
+	@Query("""
+			SELECT w FROM WorkOrder w 
+			WHERE w.companyId = :companyId 
+			  AND (
+			       LOWER(w.customerName) LIKE LOWER(CONCAT('%', :search, '%')) 
+			    OR CAST(w.itemNo AS string) LIKE CONCAT('%', :search, '%')
+			    OR LOWER(w.projectName) LIKE LOWER(CONCAT('%', :search, '%'))
+			    OR LOWER(w.material) LIKE LOWER(CONCAT('%', :search, '%'))
+			    OR LOWER(w.partName) LIKE LOWER(CONCAT('%', :search, '%'))
+			    OR LOWER(w.partSize) LIKE LOWER(CONCAT('%', :search, '%'))
+			    OR LOWER(w.partWeight) LIKE LOWER(CONCAT('%', :search, '%'))
+			    OR LOWER(w.partNumber) LIKE LOWER(CONCAT('%', :search, '%'))
+			  )
+			""")
+			Page<WorkOrder> searchByCompanyAndAnyField(
+			    @Param("companyId") String companyId,
+			    @Param("search") String search,
+			    Pageable pageable
+			);
+
+	
+	
 	@Query("SELECT MAX(w.itemNo) FROM WorkOrder w WHERE w.companyId = :companyId")
 	Integer findMaxItemNoByCompanyId(@Param("companyId") String companyId);
 

@@ -199,10 +199,10 @@ public class CompanyController {
 		try {
 
 			Map<String, Object> data = new HashMap<String, Object>();
-			Pageable pageable = PageRequest.of(page, size, Sort.by("workOrderId").descending());
+			Pageable pageable = PageRequest.of(page, size, Sort.by("itemNo").descending());
 
 			Page<WorkOrder> workOrder = workOrderRepository
-					.findByCompanyIdAndCustomerNameContainingIgnoreCase(company.getCompanyId(), customerName, pageable);
+					.searchByCompanyAndAnyField(company.getCompanyId(), customerName, pageable);
 			List<WorkOrder> workOrderList = workOrder.getContent();
 			data.put("workOrderList", workOrderList);
 			data.put("totalPages", workOrder.getTotalPages());
