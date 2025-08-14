@@ -45,5 +45,10 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
 	Integer findMaxItemNoByCompanyId(@Param("companyId") String companyId);
 
 	boolean existsByItemNo(Integer itemNo);
+	
+	
+	@Query("SELECT w.itemNo FROM WorkOrder w WHERE w.companyId = :companyId order by itemNo desc")
+	List<Integer> findItemNosByCompanyId(@Param("companyId") String companyId);
+
 
 }

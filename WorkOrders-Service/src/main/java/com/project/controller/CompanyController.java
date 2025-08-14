@@ -580,4 +580,32 @@ public class CompanyController {
         return ResponseEntity.ok(Collections.singletonMap("isUnique", isUnique));
     }
     
+	@GetMapping("/getItemList")
+	public ResponseEntity<?> findItemNosByCompanyId() {
+		try {
+			List<Integer> items = workOrderRepository.findItemNosByCompanyId(company.getCompanyId());
+			return ResponseEntity.ok(items);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error creating employee: " + e.getMessage());
+		}
+	}
+	
+	
+	
+	@GetMapping("/getWorkOrderByItemNo/{itemNo}")
+	public ResponseEntity<?> findItemNosByCompanyId(@PathVariable Integer itemNo) {
+		try {
+			List<String> workOrders = workOrderItemsRepository.findWorkOrderNoByItemNo(itemNo);
+			return ResponseEntity.ok(workOrders);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error creating employee: " + e.getMessage());
+		}
+	}
+    
 }

@@ -17,5 +17,9 @@ public interface WorkOrderItemsRepository extends JpaRepository<WorkOrderItems, 
 	    List<WorkOrderItems> findByProjectId(@Param("projectId") String projectId);
 
 	void deleteByWorkOrderId(String workOrderId);
+	
+	
+	@Query("SELECT w.workOrderNo FROM WorkOrderItems w WHERE w.itemNo = :itemNo ")
+	List<String> findWorkOrderNoByItemNo(@Param("itemNo") Integer itemNo);
 
 }
