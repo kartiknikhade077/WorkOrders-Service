@@ -1,6 +1,9 @@
 package com.project.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -118,6 +121,7 @@ public class CompanyController {
 				item.setCompanyId(company.getCompanyId());
 				item.setWorkOrderId(workOrder.getWorkOrderId());
 				item.setEmployeeId(null);
+				item.setCreatedAt(System.currentTimeMillis());
 				workOrderItemsRepository.save(item);
 			}
 
@@ -166,6 +170,7 @@ public class CompanyController {
 				item.setCompanyId(company.getCompanyId());
 				item.setWorkOrderId(workOrder.getWorkOrderId());
 				item.setEmployeeId(null);
+				item.setCreatedAt(System.currentTimeMillis());
 				workOrderItemsRepository.save(item);
 			}
 
@@ -186,7 +191,7 @@ public class CompanyController {
 
 			WorkOrder workOrder = workOrderRepository.findByWorkOrderId(workOrderId);
 
-			List<WorkOrderItems> workOrderItems = workOrderItemsRepository.findByWorkOrderId(workOrderId);
+			List<WorkOrderItems> workOrderItems = workOrderItemsRepository.findByWorkOrderIdOrderByCreatedAtAsc(workOrderId);
 
 			List<WorkOrderImage> workImages = workOrderImageRepository.findByWorkOrderId(workOrderId);
 
@@ -240,16 +245,26 @@ public class CompanyController {
 		}
 	}
 	
-	@DeleteMapping("/deleteWorkOrderItem/{itemId}")
-	public ResponseEntity<?> deleteWorkOrderItem(@PathVariable("itemId") String itemId){
-		if (!workOrderItemsRepository.existsById(itemId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("Work order item with ID " + itemId + " not found.");
-        }
+	@DeleteMapping("/deleteWorkOrderItems")
+	public ResponseEntity<?> deleteWorkOrderItems(@RequestBody List<String> itemIds) {
+	    if (itemIds == null || itemIds.isEmpty()) {
+	        return ResponseEntity.badRequest().body("No item IDs provided.");
+	    }
 
-        workOrderItemsRepository.deleteById(itemId);
-        return ResponseEntity.ok("Work order item deleted successfully.");
+	    List<String> notFoundIds = itemIds.stream()
+	            .filter(id -> !workOrderItemsRepository.existsById(id))
+	            .toList();
+
+	    if (!notFoundIds.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                .body("Work order items not found for IDs: " + notFoundIds);
+	    }
+
+	    workOrderItemsRepository.deleteAllById(itemIds);
+
+	    return ResponseEntity.ok("Work order items deleted successfully.");
 	}
+
 	
 	@DeleteMapping("/deleteWorkOrderImage/{workOrderImageId}")
     public ResponseEntity<String> deleteWorkOrderImage(@PathVariable("workOrderImageId") String workOrderImageId) {
@@ -499,7 +514,7 @@ public class CompanyController {
                 workOrderImageRepository.delete(image);
             }
             
-            List<WorkOrderItems> items = workOrderItemsRepository.findByWorkOrderId(workOrderId);
+            List<WorkOrderItems> items = workOrderItemsRepository.findByWorkOrderIdOrderByCreatedAtAsc(workOrderId);
             for (WorkOrderItems item : items) {
                 workOrderItemsRepository.delete(item);
             }

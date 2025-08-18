@@ -40,7 +40,7 @@ public class WorkOrder {
     private String projectName;
 
     @Column(name = "thickness")
-    private Float thickness;
+    private String thickness;
     
     private String projectId;
     
@@ -52,7 +52,7 @@ public class WorkOrder {
     private List<String> imageList;
     
 	public WorkOrder(String workOrderId, String companyId, String customerName, String employeeId, Integer itemNo,
-			String material, String partName, String partSize, String partWeight, String projectName, Float thickness,
+			String material, String partName, String partSize, String partWeight, String projectName, String thickness,
 			String projectId, String customerId, String partNumber, List<String> imageList) {
 		super();
 		this.workOrderId = workOrderId;
@@ -158,11 +158,11 @@ public class WorkOrder {
         this.projectName = projectName;
     }
 
-    public Float getThickness() {
+    public String getThickness() {
         return thickness;
     }
 
-    public void setThickness(Float thickness) {
+    public void setThickness(String thickness) {
         this.thickness = thickness;
     }
 

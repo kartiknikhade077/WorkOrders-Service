@@ -1,5 +1,8 @@
 package com.project.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.*;
@@ -52,7 +55,8 @@ public class WorkOrderItems {
 	
 	@Column(name = "parent_work_order_no", length = 255)
 	private String parentWorkOrderNo;
-
+	
+	private long createdAt;
 	// Getters and Setters
 
 	public String getItemId() {
@@ -174,5 +178,15 @@ public class WorkOrderItems {
 	public void setParentWorkOrderNo(String parentWorkOrderNo) {
 		this.parentWorkOrderNo = parentWorkOrderNo;
 	}
+
+	public long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	
 	
 }
