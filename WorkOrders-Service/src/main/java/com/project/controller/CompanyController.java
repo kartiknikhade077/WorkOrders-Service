@@ -740,4 +740,17 @@ public class CompanyController {
         }
     }
     
+	@GetMapping("/geSingletWorkOrderItemNo/{itemNo}")
+	public ResponseEntity<?> getWorkOrderItemNo(@PathVariable Integer itemNo) {
+		try {
+			WorkOrder workOrders = workOrderRepository.findByItemNo(itemNo);
+			return ResponseEntity.ok(workOrders);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error creating employee: " + e.getMessage());
+		}
+	}
+    
 }
