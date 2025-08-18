@@ -41,7 +41,7 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
 
 	
 	
-	@Query("SELECT MAX(w.itemNo) FROM WorkOrder w WHERE w.companyId = :companyId")
+	@Query("SELECT COALESCE(MAX(w.itemNo), 0) FROM WorkOrder w WHERE w.companyId = :companyId")
 	Integer findMaxItemNoByCompanyId(@Param("companyId") String companyId);
 
 	boolean existsByItemNo(Integer itemNo);

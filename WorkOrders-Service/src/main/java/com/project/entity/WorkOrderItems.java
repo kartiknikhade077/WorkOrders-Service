@@ -49,6 +49,9 @@ public class WorkOrderItems {
 
 	@Column(name = "work_order_no", length = 255)
 	private String workOrderNo;
+	
+	@Column(name = "parent_work_order_no", length = 255)
+	private String parentWorkOrderNo;
 
 	// Getters and Setters
 
@@ -163,4 +166,13 @@ public class WorkOrderItems {
 	public void setWorkOrderNo(String workOrderNo) {
 		this.workOrderNo = workOrderNo;
 	}
+
+	public String getParentWorkOrderNo() {
+		return parentWorkOrderNo;
+	}
+
+	public void setParentWorkOrderNo(String parentWorkOrderNo) {
+		this.parentWorkOrderNo = parentWorkOrderNo;
+	}
+	
 }
