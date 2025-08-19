@@ -13,7 +13,7 @@ public interface WorkOrderItemsRepository extends JpaRepository<WorkOrderItems, 
 	List<WorkOrderItems> findByWorkOrderIdOrderByCreatedAtAsc(String wrokOrderId);
 	
 	@Query("SELECT w FROM WorkOrderItems w WHERE w.workOrderId IN " +
-	           "(SELECT wo.workOrderId FROM WorkOrder wo WHERE wo.projectId = :projectId)")
+	           "(SELECT wo.workOrderId FROM WorkOrder wo WHERE wo.projectId = :projectId) order by createdAt")
 	    List<WorkOrderItems> findByProjectId(@Param("projectId") String projectId);
 
 	void deleteByWorkOrderId(String workOrderId);
