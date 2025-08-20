@@ -191,7 +191,7 @@ public class CompanyController {
 
 			WorkOrder workOrder = workOrderRepository.findByWorkOrderId(workOrderId);
 
-			List<WorkOrderItems> workOrderItems = workOrderItemsRepository.findByWorkOrderIdOrderByCreatedAtAsc(workOrderId);
+			List<WorkOrderItems> workOrderItems = workOrderItemsRepository.findByWorkOrderIdOrderBySequence(workOrderId);
 
 			List<WorkOrderImage> workImages = workOrderImageRepository.findByWorkOrderId(workOrderId);
 
@@ -514,7 +514,7 @@ public class CompanyController {
                 workOrderImageRepository.delete(image);
             }
             
-            List<WorkOrderItems> items = workOrderItemsRepository.findByWorkOrderIdOrderByCreatedAtAsc(workOrderId);
+            List<WorkOrderItems> items = workOrderItemsRepository.findByWorkOrderIdOrderBySequence(workOrderId);
             for (WorkOrderItems item : items) {
                 workOrderItemsRepository.delete(item);
             }

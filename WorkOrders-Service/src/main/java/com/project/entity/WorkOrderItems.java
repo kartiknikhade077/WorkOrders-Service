@@ -57,7 +57,43 @@ public class WorkOrderItems {
 	private String parentWorkOrderNo;
 	
 	private long createdAt;
+	
+	private int sequence;
+	
+	
+	
+	public WorkOrderItems() {
+	}
+
+	
+	
 	// Getters and Setters
+
+	public WorkOrderItems(String itemId, Boolean cancel, String companyId, String employeeId, Double height,
+			Integer itemNo, Double length, Integer operationNumber, String proceess, String remark, Boolean scope,
+			Double width, String workOrderId, String workOrderNo, String parentWorkOrderNo, long createdAt,
+			int sequence) {
+		super();
+		this.itemId = itemId;
+		this.cancel = cancel;
+		this.companyId = companyId;
+		this.employeeId = employeeId;
+		this.height = height;
+		this.itemNo = itemNo;
+		this.length = length;
+		this.operationNumber = operationNumber;
+		this.proceess = proceess;
+		this.remark = remark;
+		this.scope = scope;
+		this.width = width;
+		this.workOrderId = workOrderId;
+		this.workOrderNo = workOrderNo;
+		this.parentWorkOrderNo = parentWorkOrderNo;
+		this.createdAt = createdAt;
+		this.sequence = sequence;
+	}
+
+
 
 	public String getItemId() {
 		return itemId;
@@ -187,6 +223,17 @@ public class WorkOrderItems {
 		this.createdAt = createdAt;
 	}
 
-	
+
+
+	public int getSequence() {
+		return sequence;
+	}
+
+
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
+
 	
 }

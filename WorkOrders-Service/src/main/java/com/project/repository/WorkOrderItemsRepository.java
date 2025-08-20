@@ -10,7 +10,7 @@ import com.project.entity.WorkOrderItems;
 
 public interface WorkOrderItemsRepository extends JpaRepository<WorkOrderItems, String> {
 	
-	List<WorkOrderItems> findByWorkOrderIdOrderByCreatedAtAsc(String wrokOrderId);
+	List<WorkOrderItems> findByWorkOrderIdOrderBySequence(String wrokOrderId);
 	
 	@Query("SELECT w FROM WorkOrderItems w WHERE w.workOrderId IN " +
 	           "(SELECT wo.workOrderId FROM WorkOrder wo WHERE wo.projectId = :projectId) order by createdAt")
