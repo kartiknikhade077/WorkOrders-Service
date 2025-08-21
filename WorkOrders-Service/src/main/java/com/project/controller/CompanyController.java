@@ -37,6 +37,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.client.UserSerivceClinet;
 import com.project.dto.Company;
+import com.project.dto.Employee;
+import com.project.dto.ModuleAccess;
+import com.project.dto.User;
 import com.project.entity.Material;
 import com.project.entity.Parts;
 import com.project.entity.Processes;
@@ -87,11 +90,21 @@ public class CompanyController {
 	private ProcessesRepository processesRepository;
 
 	Company company;
+	User user;
+	Employee employee;
+	ModuleAccess moduleAccess;
 
 	@ModelAttribute
-	public void companyDetails() {
+	public void getUserInfo() {
 
-		company = userSerivceClinet.getCompanyInfo();
+		user = userSerivceClinet.getUserInfo();
+		moduleAccess =userSerivceClinet.getModuleAccessInfo();
+		if(user.getRole().equalsIgnoreCase("ROLE_COMPANY")) {
+			
+			company = userSerivceClinet.getCompanyInfo();
+		}else {
+			employee=userSerivceClinet.getEmployeeInfo();
+		}
 
 	}
 
@@ -608,7 +621,14 @@ public class CompanyController {
 	@GetMapping("/getItemList")
 	public ResponseEntity<?> findItemNosByCompanyId() {
 		try {
-			List<Integer> items = workOrderRepository.findItemNosByCompanyId(company.getCompanyId());
+			String companyId=null;
+			if (user.getRole().equalsIgnoreCase("ROLE_COMPANY")) {
+				companyId=company.getCompanyId();
+			} else {
+				
+				companyId=employee.getCompanyId();
+			}
+			List<Integer> items = workOrderRepository.findItemNosByCompanyId(companyId);
 			return ResponseEntity.ok(items);
 		} catch (Exception e) {
 
